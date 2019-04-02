@@ -42,8 +42,12 @@ Product.prototype.clickPercent = function(){
   return this.totalVotes / this.totalViews;
 };
 
-Product.prototype.render = function(parentId, index){
+Product.prototype.render = function(parentId){
   var parent = document.getElementById(parentId);
+
+  // var section = document.createElement('section');
+  // section.setAttribute('class', 'sectionToRemove');
+  // parent.appendChild(section);
 
   var img = document.createElement('img');
   img.setAttribute('id', this.HTMLid);
@@ -68,18 +72,26 @@ function randomImageSelector(){
     }
   }
   lastProducts = currentProducts;
-  
+
 }
+var ol = document.getElementById('orderedResultList');
 
 function displayResults(){
+  // console.log(PRODUCTS['bag']);
+  for(var i = 0; i < productArray.length; i++){
+    console.log(PRODUCTS[productArray[3][1]]);
+    var li = document.createElement('li');
 
+    ol.textContent = `${PRODUCTS[i].totalVotes} votes for ${PRODUCTS[i].name}`;
+    ol.appendChild(li);
+  }
 }
-
 function handleClick(event) {
   event.preventDefault();
 
   if(event.target.className === 'product'){
     totalVotesOnPage++;
+    console.log(totalVotesOnPage);
     //PRODUCTS[productArray[currentProducts[]][1]].totalVotes++;
     //TODO if total clicks stop listening
     if(totalVotesOnPage === 25){
@@ -87,12 +99,22 @@ function handleClick(event) {
       displayResults();
       return;
     }
-    var parent = document.getElementById(event.target.id);
-  
-    //console.log(product1);
-    //console.log(product1[0]);
-    if (parent.childNodes) {
-      //parent.replaceChild();
+
+    // var deleteProductNode = (document.getElementsByClassName('sectionToRemove'));
+    // console.log(deleteProductNode);
+    // if(deleteProductNode){
+    //   for(var i = 0; i < deleteProductNode.length; i++){
+    //     deleteProductNode.parentNode.removeChild(deleteProductNode[i]);
+    //   }
+    // }
+    // var parent = document.getElementById(parentId);
+    // if(parent.lastChild){
+    //   parent.removeChild(parent.lastChild);
+    // }
+    for (let j = 0; j < 3; j++) {
+      let parent = document.getElementById(`item_${j}`);
+      parent.removeChild(parent.lastChild);
+      console.log(parent);
     }
     addCurrentImages();
   }
@@ -107,9 +129,11 @@ for (var i = 0; i < productArray.length; i++) {
 function addCurrentImages(){
   randomImageSelector();
 
-  for (let i = 0; i < currentProducts.length; i++) {
-    PRODUCTS[productArray[currentProducts[i]][1]].render(`item_${i}`, i+1);
+  for (var i = 0; i < currentProducts.length; i++) {
+    PRODUCTS[productArray[currentProducts[i]][1]].render(`item_${i}`);
   }
 }
 
 addCurrentImages();
+console.log(totalVotesOnPage);
+
