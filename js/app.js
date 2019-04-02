@@ -1,5 +1,27 @@
 'use strict';
 
+var productArray = [
+  ['Bag', 'bag', './img/bag.jpg'],
+  ['Banana', 'banana', './img/banana.jpg'],
+  ['Bathroom', 'bathroom', './img/bathroom.jpg'],
+  ['Boots', 'boots', './img/boots.jpg'],
+  ['Breakfast', 'breakfast', './img/breakfast.jpg'],
+  ['Bubblegum', 'bubblegum', './img/bubblegum.jpg'],
+  ['Chair', 'chair', './img/chair.jpg'],
+  ['Cthulhu', 'cthulhu', './img/cthulhu.jpg'],
+  ['Dog and Duck', 'dogDuck', './img/dog-duck.jpg'],
+  ['Dragon', 'dragon', './img/dragon.jpg'],
+  ['Pen', 'pen', './img/pen.jpg'],
+  ['Pet Sweep', 'petSweep', './img/pet-sweep.jpg'],
+  ['Scissors', 'scissors', './img/scissors.jpg'],
+  ['Shark', 'shark', './img/shark.jpg'],
+  ['Sweep', 'sweep', './img/sweep.png'],
+  ['Tauntaun', 'tauntaun', './img/tauntaun.jpg'],
+  ['Unicorn', 'unicorn', './img/unicorn.jpg'],
+  ['Usb', 'usb', './img/usb.gif'],
+  ['Water Can', 'waterCan', './img/water-can.jpg'],
+  ['Wine Glass', 'wineGlass', './img/wine-glass.jpg'],
+];
 
 var container = document.getElementById('container');
 var totalVotesOnPage = 0;
@@ -20,7 +42,7 @@ Product.prototype.clickPercent = function(){
   return this.totalVotes / this.totalViews;
 };
 
-Product.prototype.render = function(parentId){
+Product.prototype.render = function(parentId, index){
   var parent = document.getElementById(parentId);
 
   var img = document.createElement('img');
@@ -33,23 +55,20 @@ Product.prototype.render = function(parentId){
 
 function randomImageSelector(){
   currentProducts = [];
-  // console.log(randomNum);
-  while(currentProducts[2] === undefined){
-    var randomNum = Math.floor((Math.random() * productArray.length) + 1);
-    if(randomNum === lastProducts[0] || randomNum === lastProducts[1] || randomNum === lastProducts[2]){
+
+  while (currentProducts[2] === undefined) {
+    var randomNum = Math.floor(Math.random() * productArray.length);
+
+    if(lastProducts.includes(randomNum)){
       randomImageSelector();
-    }else if(randomNum === currentProducts[0] || randomNum === currentProducts[1] || randomNum === currentProducts[2]){
+    }else if(currentProducts.includes(randomNum)){
       randomImageSelector();
     }else{
       currentProducts.push(randomNum);
-      console.log(randomNum);
-      console.log(currentProducts);
     }
   }
-}
-
-function addCurrentImages(event){
-
+  lastProducts = currentProducts;
+  
 }
 
 function displayResults(){
@@ -57,44 +76,40 @@ function displayResults(){
 }
 
 function handleClick(event) {
+  event.preventDefault();
+
   if(event.target.className === 'product'){
     totalVotesOnPage++;
-    PRODUCTS[event.target.id].totalVotes++;
+    //PRODUCTS[productArray[currentProducts[]][1]].totalVotes++;
     //TODO if total clicks stop listening
-    console.log(productArray);
     if(totalVotesOnPage === 25){
       //TODO remove eventlistener from container
       displayResults();
       return;
     }
-
-    randomImageSelector();
-    addCurrentImages(event);
+    var parent = document.getElementById(event.target.id);
+  
+    //console.log(product1);
+    //console.log(product1[0]);
+    if (parent.childNodes) {
+      //parent.replaceChild();
+    }
+    addCurrentImages();
   }
 }
 
 container.addEventListener('click', handleClick);
 
+for (var i = 0; i < productArray.length; i++) {
+  new Product(productArray[i][0], productArray[i][1], productArray[i][2]);
+}
 
-var productArray = [
-  ['Bag', 'bag', './img/bag.jpg'],
-  ['Banana', 'banana', './img/banana.jpg'],
-  ['Bathroom', 'bathroom', './img/bathroom.jpg'],
-  ['Boots', 'boots', './img/boots.jpg'],
-  ['Breakfast', 'breakfast', './img/breakfast.jpg'],
-  ['Bubblegum', 'bubblegum', './img/bubblegum.jpg'],
-  ['Chair', 'chair', './img/chair.jpg'],
-  ['Cthulu', 'cthulu', './img/cthulu.jpg'],
-  ['Dog and Duck', 'dogDuck', './img/dog-duck.jpg'],
-  ['Dragon', 'dragon', './img/dragon.jpg'],
-  ['Pen', 'pen', './img/pen.jpg'],
-  ['Pet Sweep', 'petSweep', './img/pet-sweep.jpg'],
-  ['Scissors', 'scissors', './img/scissors.jpg'],
-  ['Shark', 'shark', './img/shark.jpg'],
-  ['Sweep', 'sweep', './img/sweep.png'],
-  ['Tauntaun', 'tauntaun', './img/tauntaun.jpg'],
-  ['Unicorn', 'unicorn', './img/unicorn.jpg'],
-  ['Usb', 'usb', './img/usb.gif'],
-  ['Water Can', 'waterCan', './img/water-can.jpg'],
-  ['Wine Glass', 'wineGlass', './img/win-glass.jpg'],
-];
+function addCurrentImages(){
+  randomImageSelector();
+
+  for (let i = 0; i < currentProducts.length; i++) {
+    PRODUCTS[productArray[currentProducts[i]][1]].render(`item_${i}`, i+1);
+  }
+}
+
+addCurrentImages();
