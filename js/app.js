@@ -45,10 +45,6 @@ Product.prototype.clickPercent = function(){
 Product.prototype.render = function(parentId){
   var parent = document.getElementById(parentId);
 
-  // var section = document.createElement('section');
-  // section.setAttribute('class', 'sectionToRemove');
-  // parent.appendChild(section);
-
   var img = document.createElement('img');
   img.setAttribute('id', this.HTMLid);
   img.setAttribute('src', this.imgURL);
@@ -79,20 +75,21 @@ var ol = document.getElementById('orderedResultList');
 function displayResults(){
   // console.log(PRODUCTS['bag']);
   for(var i = 0; i < productArray.length; i++){
-    console.log(PRODUCTS[productArray[3][1]]);
+    // console.log(PRODUCTS[productArray[3][1]]);
     var li = document.createElement('li');
 
-    ol.textContent = `${PRODUCTS[i].totalVotes} votes for ${PRODUCTS[i].name}`;
+    li.textContent = `${PRODUCTS[productArray[i][1]].totalVotes} votes for ${PRODUCTS[productArray[i][1]].name}`;
     ol.appendChild(li);
   }
 }
 function handleClick(event) {
+  console.log(event.target.id);
   event.preventDefault();
 
   if(event.target.className === 'product'){
     totalVotesOnPage++;
     console.log(totalVotesOnPage);
-    //PRODUCTS[productArray[currentProducts[]][1]].totalVotes++;
+    PRODUCTS[event.target.id].totalVotes++;
     //TODO if total clicks stop listening
     if(totalVotesOnPage === 25){
       //TODO remove eventlistener from container
@@ -100,21 +97,10 @@ function handleClick(event) {
       return;
     }
 
-    // var deleteProductNode = (document.getElementsByClassName('sectionToRemove'));
-    // console.log(deleteProductNode);
-    // if(deleteProductNode){
-    //   for(var i = 0; i < deleteProductNode.length; i++){
-    //     deleteProductNode.parentNode.removeChild(deleteProductNode[i]);
-    //   }
-    // }
-    // var parent = document.getElementById(parentId);
-    // if(parent.lastChild){
-    //   parent.removeChild(parent.lastChild);
-    // }
     for (let j = 0; j < 3; j++) {
       let parent = document.getElementById(`item_${j}`);
       parent.removeChild(parent.lastChild);
-      console.log(parent);
+      // console.log(parent);
     }
     addCurrentImages();
   }
