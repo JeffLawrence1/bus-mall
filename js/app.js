@@ -92,6 +92,7 @@ function handleClick(event) {
     PRODUCTS[event.target.id].totalVotes++;
     //TODO if total clicks stop listening
     if(totalVotesOnPage === 25){
+      container.removeEventListener('click', handleClick);
       //TODO remove eventlistener from container
       displayResults();
       return;
