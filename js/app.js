@@ -23,6 +23,8 @@ var productArray = [
   ['Wine Glass', 'wineGlass', './img/wine-glass.jpg'],
 ];
 
+var STATE_KEY = 'voteState';
+
 var container = document.getElementById('container');
 var totalVotesOnPage = 0;
 var PRODUCTS = {};
@@ -154,15 +156,12 @@ function handleClick(event) {
   event.preventDefault();
 
   if(event.target.className === 'product'){
+
     totalVotesOnPage++;
-    // console.log(totalVotesOnPage);
-    // console.log(PRODUCTS[productArray[0][1]].name);
-    // console.log(PRODUCTS[productArray[15][1]].totalVotes);
     PRODUCTS[event.target.id].totalVotes++;
-    //TODO if total clicks stop listening
+
     if(totalVotesOnPage === 25){
       container.removeEventListener('click', handleClick);
-      //TODO remove eventlistener from container
       displayResults();
       displayBarChart();
       return;
@@ -191,6 +190,16 @@ function addCurrentImages(){
   }
 }
 
+function setStateToLocalStorage(){
+  localStorage.setItem(STATE_KEY, JSON.stringify(PRODUCTS));
+}
+
+function getStateFromLocalStorage(){
+  if(localStorage[STATE_KEY]){
+    var rawState = localStorage.getItem(STATE_KEY);
+    PRODUCTS = JSON.parse(rawState);
+  }
+}
 addCurrentImages();
 // console.log(totalVotesOnPage);
 
