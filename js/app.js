@@ -121,7 +121,7 @@ function displayBarChart(){
       PRODUCTS[productArray[5][1]].totalVotes, PRODUCTS[productArray[6][1]].totalVotes, PRODUCTS[productArray[7][1]].totalVotes, PRODUCTS[productArray[8][1]].totalVotes, PRODUCTS[productArray[9][1]].totalVotes,
       PRODUCTS[productArray[10][1]].totalVotes, PRODUCTS[productArray[11][1]].totalVotes, PRODUCTS[productArray[12][1]].totalVotes, PRODUCTS[productArray[13][1]].totalVotes, PRODUCTS[productArray[14][1]].totalVotes,
       PRODUCTS[productArray[15][1]].totalVotes, PRODUCTS[productArray[16][1]].totalVotes, PRODUCTS[productArray[17][1]].totalVotes, PRODUCTS[productArray[18][1]].totalVotes, PRODUCTS[productArray[19][1]].totalVotes],
-    backgroundColor: backgroundColors
+    backgroundColor: backgroundColors,
   };
 
   var data = {
@@ -135,6 +135,15 @@ function displayBarChart(){
   var barChartConfig = {
     type: 'bar',
     data: data,
+    options: {
+      title: {
+        display: true,
+        text: 'Vote Bar Chart'
+      },
+      legend: {
+        display: false,
+      }
+    },
   };
 
   new Chart(ctx, barChartConfig);
