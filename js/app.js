@@ -32,7 +32,11 @@ var curName = '';
 
 var STATE_KEY = 'voteState';
 
-var STATE_OBJ = {};
+var STATE_OBJ = {
+  totalVotesOnPage: 0,
+  lastProducts: [],
+  currentProducts: [],
+};
 // console.log(STATE_OBJ);
 
 
@@ -65,7 +69,7 @@ function randomImageSelector(){
 
   while (currentProducts[2] === undefined) {
     var randomNum = Math.floor(Math.random() * productArray.length);
-
+    // console.log(lastProducts);
     if(lastProducts.includes(randomNum)){
       randomImageSelector();
     }else if(currentProducts.includes(randomNum)){
@@ -169,7 +173,7 @@ function handleClick(event) {
 
     STATE_OBJ.totalVotesOnPage = totalVotesOnPage;
     curName = PRODUCTS[event.target.id].HTMLid;
-    console.log(curName);
+    // console.log(curName);
     STATE_OBJ[curName] = PRODUCTS[event.target.id].totalVotes;
     if(totalVotesOnPage === 25){
       container.removeEventListener('click', handleClick);
@@ -226,10 +230,19 @@ function getStateFromLocalStorage(){
   // console.log(rawState);
   STATE_OBJ = JSON.parse(rawState);
   currentProducts = STATE_OBJ.currentProducts;
+  // console.log(typeof STATE_OBJ.lastProducts);
   lastProducts = STATE_OBJ.lastProducts;
   totalVotesOnPage = STATE_OBJ.totalVotesOnPage;
 
-  console.log(STATE_OBJ);
+  for(var i = 0; i < productArray.length; i++){
+    // console.log(PRODUCTS[productArray[i][1]].totalVotes);
+    // console.log(STATE_OBJ[productArray[i][1]].totalVotes);
+    curName = productArray[i][1];
+    // console.log(curName);
+    PRODUCTS[productArray[i][1]].totalVotes = STATE_OBJ[curName];
+  }
+
+  // console.log(STATE_OBJ);
 
   // }
   // else{
@@ -238,9 +251,18 @@ function getStateFromLocalStorage(){
 }
 // localStorage.clear();
 (function startBusMall(){
-  if(localStorage[STATE_KEY]){
+  console.log(typeof JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage);
+  if(localStorage[STATE_KEY] || JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage <= 25){
     getStateFromLocalStorage();
   }
+  var RESET_OBJ = {
+    totalVotesOnPage: 0,
+    lastProducts: [],
+    currentProducts: [],
+  };
+
+  localStorage.setItem(STATE_KEY, JSON.stringify(RESET_OBJ));
+
   addCurrentImages();
 
 })();
