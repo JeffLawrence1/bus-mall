@@ -82,6 +82,64 @@ function displayResults(){
     ol.appendChild(li);
   }
 }
+
+var chartDiv = document.getElementById('barChart');
+
+function displayBarChart(){
+  var canvas = document.createElement('canvas');
+  canvas.setAttribute('id', 'myChart');
+  chartDiv.appendChild(canvas);
+
+  var canvasChart = document.getElementById('myChart');
+  var ctx = canvasChart.getContext('2d');
+
+  var backgroundColors = [
+    'rgba(255, 99, 132)',
+    'rgba(54, 162, 235)',
+    'rgba(255, 206, 86)',
+    'rgba(75, 192, 192)',
+    'rgba(153, 102, 255)',
+    'rgba(255, 159, 64)',
+    'rgba(255, 99, 132)',
+    'rgba(54, 162, 235)',
+    'rgba(255, 206, 86)',
+    'rgba(75, 192, 192)',
+    'rgba(153, 102, 255)',
+    'rgba(255, 159, 64)',
+    'rgba(255, 99, 132)',
+    'rgba(54, 162, 235)',
+    'rgba(255, 206, 86)',
+    'rgba(75, 192, 192)',
+    'rgba(153, 102, 255)',
+    'rgba(255, 159, 64)',
+    'rgba(54, 162, 235)',
+    'rgba(255, 206, 86)',
+  ];
+
+  var datasetItem = {
+    data: [PRODUCTS[productArray[0][1]].totalVotes, PRODUCTS[productArray[1][1]].totalVotes, PRODUCTS[productArray[2][1]].totalVotes, PRODUCTS[productArray[3][1]].totalVotes, PRODUCTS[productArray[4][1]].totalVotes,
+      PRODUCTS[productArray[5][1]].totalVotes, PRODUCTS[productArray[6][1]].totalVotes, PRODUCTS[productArray[7][1]].totalVotes, PRODUCTS[productArray[8][1]].totalVotes, PRODUCTS[productArray[9][1]].totalVotes,
+      PRODUCTS[productArray[10][1]].totalVotes, PRODUCTS[productArray[11][1]].totalVotes, PRODUCTS[productArray[12][1]].totalVotes, PRODUCTS[productArray[13][1]].totalVotes, PRODUCTS[productArray[14][1]].totalVotes,
+      PRODUCTS[productArray[15][1]].totalVotes, PRODUCTS[productArray[16][1]].totalVotes, PRODUCTS[productArray[17][1]].totalVotes, PRODUCTS[productArray[18][1]].totalVotes, PRODUCTS[productArray[19][1]].totalVotes],
+    backgroundColor: backgroundColors
+  };
+
+  var data = {
+    labels: [PRODUCTS[productArray[0][1]].name, PRODUCTS[productArray[1][1]].name, PRODUCTS[productArray[2][1]].name, PRODUCTS[productArray[3][1]].name, PRODUCTS[productArray[4][1]].name,
+      PRODUCTS[productArray[5][1]].name, PRODUCTS[productArray[6][1]].name, PRODUCTS[productArray[7][1]].name, PRODUCTS[productArray[8][1]].name, PRODUCTS[productArray[9][1]].name,
+      PRODUCTS[productArray[10][1]].name, PRODUCTS[productArray[11][1]].name, PRODUCTS[productArray[12][1]].name, PRODUCTS[productArray[13][1]].name, PRODUCTS[productArray[14][1]].name,
+      PRODUCTS[productArray[15][1]].name, PRODUCTS[productArray[16][1]].name, PRODUCTS[productArray[17][1]].name, PRODUCTS[productArray[18][1]].name, PRODUCTS[productArray[19][1]].name],
+    datasets: [datasetItem]
+  };
+
+  var barChartConfig = {
+    type: 'bar',
+    data: data,
+  };
+
+  var barChart = new Chart(ctx, barChartConfig);
+}
+
 function handleClick(event) {
   console.log(event.target.id);
   event.preventDefault();
@@ -89,12 +147,15 @@ function handleClick(event) {
   if(event.target.className === 'product'){
     totalVotesOnPage++;
     console.log(totalVotesOnPage);
+    console.log(PRODUCTS[productArray[0][1]].name);
+    console.log(PRODUCTS[productArray[15][1]].totalVotes);
     PRODUCTS[event.target.id].totalVotes++;
     //TODO if total clicks stop listening
     if(totalVotesOnPage === 25){
       container.removeEventListener('click', handleClick);
       //TODO remove eventlistener from container
       displayResults();
+      displayBarChart();
       return;
     }
 
@@ -123,4 +184,5 @@ function addCurrentImages(){
 
 addCurrentImages();
 console.log(totalVotesOnPage);
+
 
