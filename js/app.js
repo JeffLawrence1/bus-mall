@@ -159,8 +159,8 @@ function handleClick(event) {
       return;
     }
 
-    for (let j = 0; j < 3; j++) {
-      let parent = document.getElementById(`item_${j}`);
+    for (var j = 0; j < 3; j++) {
+      var parent = document.getElementById(`item_${j}`);
       parent.removeChild(parent.lastChild);
       // console.log(parent);
     }
