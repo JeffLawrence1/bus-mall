@@ -23,13 +23,18 @@ var productArray = [
   ['Wine Glass', 'wineGlass', './img/wine-glass.jpg'],
 ];
 
-var STATE_KEY = 'voteState';
-
 var container = document.getElementById('container');
 var totalVotesOnPage = 0;
 var PRODUCTS = {};
 var lastProducts = [];
 var currentProducts = [];
+var curName = '';
+
+var STATE_KEY = 'voteState';
+
+var STATE_OBJ = {};
+// console.log(STATE_OBJ);
+
 
 function Product(name, HTMLid, imgURL){
   this.name = name;
@@ -70,6 +75,8 @@ function randomImageSelector(){
     }
   }
   lastProducts = currentProducts;
+  STATE_OBJ.currentProducts = currentProducts;
+  STATE_OBJ.lastProducts = lastProducts;
 
 }
 var ol = document.getElementById('orderedResultList');
@@ -160,8 +167,13 @@ function handleClick(event) {
     totalVotesOnPage++;
     PRODUCTS[event.target.id].totalVotes++;
 
+    STATE_OBJ.totalVotesOnPage = totalVotesOnPage;
+    curName = PRODUCTS[event.target.id].HTMLid;
+    console.log(curName);
+    STATE_OBJ[curName] = PRODUCTS[event.target.id].totalVotes;
     if(totalVotesOnPage === 25){
       container.removeEventListener('click', handleClick);
+
       displayResults();
       displayBarChart();
       return;
@@ -172,6 +184,8 @@ function handleClick(event) {
       parent.removeChild(parent.lastChild);
       // console.log(parent);
     }
+    // renderStateObject();  //slkdjfskljdk
+    console.log(STATE_OBJ);
     addCurrentImages();
   }
 }
@@ -180,27 +194,58 @@ container.addEventListener('click', handleClick);
 
 for (var i = 0; i < productArray.length; i++) {
   new Product(productArray[i][0], productArray[i][1], productArray[i][2]);
+  // STATE_OBJ[productArray[i][1]] = 0;
 }
 
 function addCurrentImages(){
+
+  setStateToLocalStorage();
+  console.log(localStorage.getItem('voteState'));
   randomImageSelector();
 
   for (var i = 0; i < currentProducts.length; i++) {
+    // console.log(PRODUCTS);
+    // console.log(PRODUCTS[productArray[currentProducts[i]][1]]);
     PRODUCTS[productArray[currentProducts[i]][1]].render(`item_${i}`);
   }
+
 }
 
+
 function setStateToLocalStorage(){
-  localStorage.setItem(STATE_KEY, JSON.stringify(PRODUCTS));
+  // getStateFromLocalStorage();
+  // console.log(STATE_OBJ);
+  localStorage.setItem(STATE_KEY, JSON.stringify(STATE_OBJ));
+  // console.log(STATE_OBJ);
+  // console.log(PRODUCTS);
 }
 
 function getStateFromLocalStorage(){
-  if(localStorage[STATE_KEY]){
-    var rawState = localStorage.getItem(STATE_KEY);
-    PRODUCTS = JSON.parse(rawState);
-  }
+  // if(localStorage[STATE_KEY]){
+  var rawState = localStorage.getItem(STATE_KEY);
+  // console.log(rawState);
+  STATE_OBJ = JSON.parse(rawState);
+  currentProducts = STATE_OBJ.currentProducts;
+  lastProducts = STATE_OBJ.lastProducts;
+  totalVotesOnPage = STATE_OBJ.totalVotesOnPage;
+
+  console.log(STATE_OBJ);
+
+  // }
+  // else{
+  //   addCurrentImages();
+  // }
 }
-addCurrentImages();
+// localStorage.clear();
+(function startBusMall(){
+  if(localStorage[STATE_KEY]){
+    getStateFromLocalStorage();
+  }
+  addCurrentImages();
+
+})();
+// addCurrentImages();
+
 // console.log(totalVotesOnPage);
 
 
