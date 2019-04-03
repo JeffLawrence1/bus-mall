@@ -82,6 +82,15 @@ function displayResults(){
     ol.appendChild(li);
   }
 }
+
+var chartDiv = document.getElementById('barChart');
+
+function displayBarChart(){
+  var canvas = document.createElement('canvas');
+  canvas.setAttribute('id', 'myChart');
+  chartDiv.appendChild(canvas); 
+}
+
 function handleClick(event) {
   console.log(event.target.id);
   event.preventDefault();
@@ -95,6 +104,7 @@ function handleClick(event) {
       container.removeEventListener('click', handleClick);
       //TODO remove eventlistener from container
       displayResults();
+      displayBarChart();
       return;
     }
 
