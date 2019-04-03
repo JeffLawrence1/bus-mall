@@ -137,7 +137,7 @@ function displayBarChart(){
     data: data,
   };
 
-  var barChart = new Chart(ctx, barChartConfig);
+  new Chart(ctx, barChartConfig);
 }
 
 function handleClick(event) {
