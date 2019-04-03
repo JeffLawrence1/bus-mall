@@ -17,17 +17,17 @@
   text-align: center;
 }
 
-#item_1 {
+#item_0 {
   grid-column-start: 1;
   grid-column-end: 5;
 }
 
-#item_2 {
+#item_1 {
   grid-column-start: 5;
   grid-column-end: 9;
 }
 
-#item_3 {
+#item_2 {
   grid-column-start: 9;
   grid-column-end: last;
 }
@@ -50,4 +50,9 @@
   background-color:lightblue;
   outline: 3px solid black;
   text-align: center;
+}
+
+.sectionToRemove {
+  width: auto;
+  height: 95%;
 }
