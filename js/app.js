@@ -141,14 +141,14 @@ function displayBarChart(){
 }
 
 function handleClick(event) {
-  console.log(event.target.id);
+  // console.log(event.target.id);
   event.preventDefault();
 
   if(event.target.className === 'product'){
     totalVotesOnPage++;
-    console.log(totalVotesOnPage);
-    console.log(PRODUCTS[productArray[0][1]].name);
-    console.log(PRODUCTS[productArray[15][1]].totalVotes);
+    // console.log(totalVotesOnPage);
+    // console.log(PRODUCTS[productArray[0][1]].name);
+    // console.log(PRODUCTS[productArray[15][1]].totalVotes);
     PRODUCTS[event.target.id].totalVotes++;
     //TODO if total clicks stop listening
     if(totalVotesOnPage === 25){
@@ -183,6 +183,6 @@ function addCurrentImages(){
 }
 
 addCurrentImages();
-console.log(totalVotesOnPage);
+// console.log(totalVotesOnPage);
 
 
