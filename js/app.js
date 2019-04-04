@@ -1,5 +1,5 @@
 'use strict';
-
+//array to store data
 var productArray = [
   ['Bag', 'bag', './img/bag.jpg'],
   ['Banana', 'banana', './img/banana.jpg'],
@@ -22,7 +22,7 @@ var productArray = [
   ['Water Can', 'waterCan', './img/water-can.jpg'],
   ['Wine Glass', 'wineGlass', './img/wine-glass.jpg'],
 ];
-
+//global vars
 var container = document.getElementById('container');
 var totalVotesOnPage = 0;
 var PRODUCTS = {};
@@ -31,15 +31,12 @@ var currentProducts = [];
 var curName = '';
 
 var STATE_KEY = 'voteState';
-
 var STATE_OBJ = {
   totalVotesOnPage: 0,
   lastProducts: [],
   currentProducts: [],
 };
-// console.log(STATE_OBJ);
-
-
+//constructor for PRODUCTS obj
 function Product(name, HTMLid, imgURL){
   this.name = name;
   this.HTMLid = HTMLid;
@@ -63,13 +60,13 @@ Product.prototype.render = function(parentId){
 
   parent.appendChild(img);
 };
-
+//randomimage selector function
 function randomImageSelector(){
   currentProducts = [];
 
   while (currentProducts[2] === undefined) {
     var randomNum = Math.floor(Math.random() * productArray.length);
-    // console.log(lastProducts);
+
     if(lastProducts.includes(randomNum)){
       randomImageSelector();
     }else if(currentProducts.includes(randomNum)){
@@ -85,17 +82,17 @@ function randomImageSelector(){
 }
 var ol = document.getElementById('orderedResultList');
 
+//display results function
 function displayResults(){
-  // console.log(PRODUCTS['bag']);
-  for(var i = 0; i < productArray.length; i++){
-    // console.log(PRODUCTS[productArray[3][1]]);
-    var li = document.createElement('li');
 
+  for(var i = 0; i < productArray.length; i++){
+
+    var li = document.createElement('li');
     li.textContent = `${PRODUCTS[productArray[i][1]].totalVotes} votes for ${PRODUCTS[productArray[i][1]].name}`;
     ol.appendChild(li);
   }
 }
-
+//chart creation
 var chartDiv = document.getElementById('barChart');
 
 function displayBarChart(){
@@ -129,9 +126,10 @@ function displayBarChart(){
     'rgba(255, 206, 86)',
   ];
   //------------------------------
-  //dataSet and labels could be replaced using the keys rather than hardcoding
+  //dataSet and labels could be replaced by loading the keys in an array and passing it in
+  //rather than hardcoding
   //----------------------------------------------
-  
+
   //var keys = Object.keys(PRODUCTS);
   // var dataSets = [];
   // var labels = [];
@@ -173,9 +171,9 @@ function displayBarChart(){
 
   new Chart(ctx, barChartConfig);
 }
-
+//click handler
 function handleClick(event) {
-  // console.log(event.target.id);
+
   event.preventDefault();
 
   if(event.target.className === 'product'){
@@ -185,7 +183,7 @@ function handleClick(event) {
 
     STATE_OBJ.totalVotesOnPage = totalVotesOnPage;
     curName = PRODUCTS[event.target.id].HTMLid;
-    // console.log(curName);
+
     STATE_OBJ[curName] = PRODUCTS[event.target.id].totalVotes;
     if(totalVotesOnPage === 25){
       container.removeEventListener('click', handleClick);
@@ -199,73 +197,56 @@ function handleClick(event) {
     for (var j = 0; j < 3; j++) {
       var parent = document.getElementById(`item_${j}`);
       parent.removeChild(parent.lastChild);
-      // console.log(parent);
     }
-    // renderStateObject();  //slkdjfskljdk
-    console.log(STATE_OBJ);
     addCurrentImages();
   }
 }
 
 container.addEventListener('click', handleClick);
 
+//PRODUCTS obj builder/loader
 for (var i = 0; i < productArray.length; i++) {
   new Product(productArray[i][0], productArray[i][1], productArray[i][2]);
-  // STATE_OBJ[productArray[i][1]] = 0;
 }
 
+//image adder
 function addCurrentImages(){
 
   setStateToLocalStorage();
-  console.log(localStorage.getItem('voteState'));
   randomImageSelector();
 
   for (var i = 0; i < currentProducts.length; i++) {
-    // console.log(PRODUCTS);
-    // console.log(PRODUCTS[productArray[currentProducts[i]][1]]);
+
     PRODUCTS[productArray[currentProducts[i]][1]].render(`item_${i}`);
   }
-
 }
 
-
+//localstorage setter
 function setStateToLocalStorage(){
-  // getStateFromLocalStorage();
-  // console.log(STATE_OBJ);
-  localStorage.setItem(STATE_KEY, JSON.stringify(STATE_OBJ));
-  // console.log(STATE_OBJ);
-  // console.log(PRODUCTS);
-}
 
+  localStorage.setItem(STATE_KEY, JSON.stringify(STATE_OBJ));
+}
+//localstorage getter
 function getStateFromLocalStorage(){
-  // if(localStorage[STATE_KEY]){
+
   var rawState = localStorage.getItem(STATE_KEY);
-  // console.log(rawState);
+
   STATE_OBJ = JSON.parse(rawState);
   currentProducts = STATE_OBJ.currentProducts;
-  // console.log(typeof STATE_OBJ.lastProducts);
+
   lastProducts = STATE_OBJ.lastProducts;
   totalVotesOnPage = STATE_OBJ.totalVotesOnPage;
 
   for(var i = 0; i < productArray.length; i++){
-    // console.log(PRODUCTS[productArray[i][1]].totalVotes);
-    // console.log(STATE_OBJ[productArray[i][1]].totalVotes);
+
     curName = productArray[i][1];
-    // console.log(curName);
+
     PRODUCTS[productArray[i][1]].totalVotes = STATE_OBJ[curName];
   }
-
-  // console.log(STATE_OBJ);
-
-  // }
-  // else{
-  //   addCurrentImages();
-  // }
 }
-// localStorage.clear();
+//iffe to start the whole app
 (function startBusMall(){
-  // console.log(typeof JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage);
-  // var returnedNum = JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage
+
   if(localStorage[STATE_KEY] && JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage < 25){
     getStateFromLocalStorage();
   }
@@ -280,8 +261,5 @@ function getStateFromLocalStorage(){
   addCurrentImages();
 
 })();
-// addCurrentImages();
-
-// console.log(totalVotesOnPage);
 
 
