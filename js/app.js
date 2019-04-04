@@ -128,6 +128,18 @@ function displayBarChart(){
     'rgba(54, 162, 235)',
     'rgba(255, 206, 86)',
   ];
+  //------------------------------
+  //dataSet and labels could be replaced using the keys rather than hardcoding
+  //----------------------------------------------
+  
+  //var keys = Object.keys(PRODUCTS);
+  // var dataSets = [];
+  // var labels = [];
+
+  // for(var i = 0; i < keys.length; i++){
+  //   dataSets.push(PRODUCTS[keys[i]].totalVotes);
+  //   labels.push(PRODUCTS[keys[i]].name);
+  // }
 
   var datasetItem = {
     data: [PRODUCTS[productArray[0][1]].totalVotes, PRODUCTS[productArray[1][1]].totalVotes, PRODUCTS[productArray[2][1]].totalVotes, PRODUCTS[productArray[3][1]].totalVotes, PRODUCTS[productArray[4][1]].totalVotes,
@@ -178,6 +190,7 @@ function handleClick(event) {
     if(totalVotesOnPage === 25){
       container.removeEventListener('click', handleClick);
 
+      setStateToLocalStorage();
       displayResults();
       displayBarChart();
       return;
@@ -251,8 +264,9 @@ function getStateFromLocalStorage(){
 }
 // localStorage.clear();
 (function startBusMall(){
-  console.log(typeof JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage);
-  if(localStorage[STATE_KEY] || JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage <= 25){
+  // console.log(typeof JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage);
+  // var returnedNum = JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage
+  if(localStorage[STATE_KEY] && JSON.parse(localStorage[STATE_KEY]).totalVotesOnPage < 25){
     getStateFromLocalStorage();
   }
   var RESET_OBJ = {
