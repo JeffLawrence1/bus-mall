@@ -44,6 +44,8 @@
 #orderedResultList {
   margin-left: 25px;
   list-style-type: decimal;
+  font-family: 'Righteous', cursive;
+  font-size: 16px;
 }
 
 .product {

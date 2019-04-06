@@ -127,31 +127,25 @@ function displayBarChart(){
   ];
   //------------------------------
   //dataSet and labels could be replaced by loading the keys in an array and passing it in
-  //rather than hardcoding
+  //rather than hardcoding --- Adam's example from demo
   //----------------------------------------------
 
-  //var keys = Object.keys(PRODUCTS);
-  // var dataSets = [];
-  // var labels = [];
+  var keys = Object.keys(PRODUCTS);
+  var dataSets = [];
+  var labels = [];
 
-  // for(var i = 0; i < keys.length; i++){
-  //   dataSets.push(PRODUCTS[keys[i]].totalVotes);
-  //   labels.push(PRODUCTS[keys[i]].name);
-  // }
-
+  for(var i = 0; i < keys.length; i++){
+    dataSets.push(PRODUCTS[keys[i]].totalVotes);
+    labels.push(PRODUCTS[keys[i]].name);
+  }
+  //------------------------------------------------
   var datasetItem = {
-    data: [PRODUCTS[productArray[0][1]].totalVotes, PRODUCTS[productArray[1][1]].totalVotes, PRODUCTS[productArray[2][1]].totalVotes, PRODUCTS[productArray[3][1]].totalVotes, PRODUCTS[productArray[4][1]].totalVotes,
-      PRODUCTS[productArray[5][1]].totalVotes, PRODUCTS[productArray[6][1]].totalVotes, PRODUCTS[productArray[7][1]].totalVotes, PRODUCTS[productArray[8][1]].totalVotes, PRODUCTS[productArray[9][1]].totalVotes,
-      PRODUCTS[productArray[10][1]].totalVotes, PRODUCTS[productArray[11][1]].totalVotes, PRODUCTS[productArray[12][1]].totalVotes, PRODUCTS[productArray[13][1]].totalVotes, PRODUCTS[productArray[14][1]].totalVotes,
-      PRODUCTS[productArray[15][1]].totalVotes, PRODUCTS[productArray[16][1]].totalVotes, PRODUCTS[productArray[17][1]].totalVotes, PRODUCTS[productArray[18][1]].totalVotes, PRODUCTS[productArray[19][1]].totalVotes],
+    data: dataSets,
     backgroundColor: backgroundColors,
   };
 
   var data = {
-    labels: [PRODUCTS[productArray[0][1]].name, PRODUCTS[productArray[1][1]].name, PRODUCTS[productArray[2][1]].name, PRODUCTS[productArray[3][1]].name, PRODUCTS[productArray[4][1]].name,
-      PRODUCTS[productArray[5][1]].name, PRODUCTS[productArray[6][1]].name, PRODUCTS[productArray[7][1]].name, PRODUCTS[productArray[8][1]].name, PRODUCTS[productArray[9][1]].name,
-      PRODUCTS[productArray[10][1]].name, PRODUCTS[productArray[11][1]].name, PRODUCTS[productArray[12][1]].name, PRODUCTS[productArray[13][1]].name, PRODUCTS[productArray[14][1]].name,
-      PRODUCTS[productArray[15][1]].name, PRODUCTS[productArray[16][1]].name, PRODUCTS[productArray[17][1]].name, PRODUCTS[productArray[18][1]].name, PRODUCTS[productArray[19][1]].name],
+    labels: labels,
     datasets: [datasetItem]
   };
 
@@ -240,8 +234,11 @@ function getStateFromLocalStorage(){
   for(var i = 0; i < productArray.length; i++){
 
     curName = productArray[i][1];
-
-    PRODUCTS[productArray[i][1]].totalVotes = STATE_OBJ[curName];
+    if(isNaN(STATE_OBJ[curName])){
+      PRODUCTS[productArray[i][1]].totalVotes = 0;
+    }else{
+      PRODUCTS[productArray[i][1]].totalVotes = STATE_OBJ[curName];
+    }
   }
 }
 //iffe to start the whole app
