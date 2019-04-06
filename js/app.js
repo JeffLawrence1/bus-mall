@@ -240,8 +240,11 @@ function getStateFromLocalStorage(){
   for(var i = 0; i < productArray.length; i++){
 
     curName = productArray[i][1];
-
-    PRODUCTS[productArray[i][1]].totalVotes = STATE_OBJ[curName];
+    if(isNaN(STATE_OBJ[curName])){
+      PRODUCTS[productArray[i][1]].totalVotes = 0;
+    }else{
+      PRODUCTS[productArray[i][1]].totalVotes = STATE_OBJ[curName];
+    }
   }
 }
 //iffe to start the whole app
